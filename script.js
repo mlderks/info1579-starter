@@ -11,16 +11,18 @@
 "use strict";
 
 // DO NOT MODIFY
+/*
 const display = (label, value) =>
   (document.getElementById("output").innerHTML += `${label}: ${value}<br>`);
+*/
 // END DO NOT MODIFY
 
 // ADD YOUR CODE BELOW
 
 // TODO: Create variables for your name (string), total number of modules for our class (number), and if you're enrolled (boolean)
 const courseModules = ['Module 1', 'Module 2', 'Module 3', 'Module 4', 'Module 5', 'Module 6', 'Module 7', 'Module 8', 'Module 9', 'Module 10'];
-const completedModules = ['Module 1', 'Module 2', 'Module 3'];
-const myName = 'Megan Derks';
+/* const completedModules = ['Module 1', 'Module 2', 'Module 3']; */
+/* const myName = 'Megan Derks'; */
 let totalModules = 10;
 let isEnrolled = true;
 
@@ -119,7 +121,7 @@ const displayCompletedModules = (...modules) => {
 const completedModulesList = displayCompletedModules(...completedModules);
 
 // find what my study week looks like
-let studyDay;
+/* let studyDay; */
 if (percentRemaining == 0) {
   studyDay = 'Complete';
 } 
@@ -165,6 +167,7 @@ return studyPlan;
 
 // TODO: Display your results. Use the correct variables and avoid hard-coding the data below.
 // TODO: Adjust all decimals to two places.
+/*
 display("Welcome Message", welcomeMessage);
 display("My Name", myName);
 display("Enrolled", isEnrolled);
@@ -175,15 +178,28 @@ display("Daily Study Hours (7 days)", dailyStudyHours.toFixed(2));
 display("Daily Study Minutes (7 days)", dailyStudyMinutes.toFixed(2));
 display("Daily Study Hours (with rest day)", adjustedDailyHours.toFixed(2));
 display("Daily Study Minutes (with rest day)", adjustedDailyMinutes.toFixed(2));
+*/
 
 // TODO: Display your results with a % sign
+/*
 let formattedPercentComplete = `${percentComplete.toFixed(2)}%`;
 display("Percent Complete", formattedPercentComplete);
 let formattedPercentRemaining = `${percentRemaining.toFixed(2)}%`;
 display("Percent Remaining", formattedPercentRemaining);
+*/
 
 // Display progress, grade, and study plan for the day
+/*
 display("Current Progress", getCourseProgress(percentRemaining));
 display("Course Grade", getCourseGrade(percentComplete));
 display("Today is", studyDay);
 display("Today's study plan is", getStudyPlan(studyDay));
+*/
+
+// Get the DOM elements
+const studentNameInput = document.getElementById("studentName");
+const completedModulesInput = document.getElementById("completedModules");
+const studyDayInput = document.getElementById("studyDay");
+const generateButton = document.getElementById("generateButton");
+const resetButton = document.getElementById("resetButton");
+const output = document.getElementById("output");
