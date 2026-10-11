@@ -20,17 +20,17 @@ const display = (label, value) =>
 // ADD YOUR CODE BELOW
 
 // Get the DOM elements
-const studentNameInput = document.getElementById("studentName");
-const completedModulesInput = document.getElementById("completedModules");
-const studyDayInput = document.getElementById("studyDay");
+let studentNameInput = document.getElementById("studentName");
+let completedModulesInput = document.getElementById("completedModules");
+let studyDayInput = document.getElementById("studyDay");
 const generateButton = document.getElementById("generateButton");
 const resetButton = document.getElementById("resetButton");
-const output = document.getElementById("output");
+let output = document.getElementById("output");
 
 // TODO: Create variables for your name (string), total number of modules for our class (number), and if you're enrolled (boolean)
 const courseModules = ['Module 1', 'Module 2', 'Module 3', 'Module 4', 'Module 5', 'Module 6', 'Module 7', 'Module 8', 'Module 9', 'Module 10'];
-/* const completedModules = ['Module 1', 'Module 2', 'Module 3']; */
-/* const myName = 'Megan Derks'; */
+// const completedModules = ['Module 1', 'Module 2', 'Module 3'];
+// const myName = 'Megan Derks';
 let totalModules = 10;
 // let isEnrolled = true;
 
@@ -114,24 +114,6 @@ else {
 }
 };
 
-// display course modules
-const displayModules = modules => {
-  const list = document.createElement("ul");
-  for (let i = 0; i < courseModules.length; i++) {
-    // display(`Module ${i + 1}`, modules[i]);
-    const listItem = document.createElement("li");
-    listItem.textContent = modules[i];
-    list.appendChild(listItem);
-  }
-  return list;
-};
-
-// display remaining modules
-const displayRemainingModules = completedModules => {
-  const remainingModules = courseModules.slice(completedModules);
-  const remainingModulesList = document.getElementById(remainingModulesList).appendChild(displayModules(remainingModules));
-};
-
 // get study plan
 const getStudyPlan = studyDay => {
   let studyPlan;
@@ -166,20 +148,44 @@ const getStudyPlan = studyDay => {
 return studyPlan;
 };
 
+// display course modules
+const displayModules = modules => {
+  const list = document.createElement("ul");
+  for (let i = 0; i < courseModules.length; i++) {
+    // display(`Module ${i + 1}`, modules[i]);
+    const listItem = document.createElement("li");
+    listItem.textContent = modules[i];
+    list.appendChild(listItem);
+  }
+  return list;
+};
+
+// display remaining modules
+const displayRemainingModules = (completedModules) => {
+  const remainingModules = courseModules.slice(completedModules);
+  document.addEventListener("DOMContentLoaded", () => {
+    const remainingModulesList = document.getElementById("remainingModulesList");
+    remainingModulesList.appendChild(displayModules(remainingModules));
+  });
+};
+
 // get user input 
 const generateDashboard = () => {
-  const studentName = studentNameInput;
-  const completedModules = completedModulesInput;
-  const studyDay = studyDayInput;
+  const studentName = studentNameInput.value;
+  const completedModules = completedModulesInput.value;
+  const studyDay = studyDayInput.value;
   const totalStudyHours = calculateStudyHours(courseModules.length);
-  const percentComplete = calculatePercentComplete(completedModulesInput, courseModules.length);
+  const percentComplete = calculatePercentComplete(completedModules, courseModules.length);
+  let modulesRemaining = totalModules - completedModules;
+  let hoursRemaining = hoursPerWeek * modulesRemaining;
   let percentRemaining = (hoursRemaining / totalStudyHours) * 100;
-  // let dailyStudyHours = hoursPerWeek / 7;
-  // let dailyStudyMinutes = dailyStudyHours * 60;
+  //let dailyStudyHours = hoursPerWeek / 7;
+  //let dailyStudyMinutes = dailyStudyHours * 60;
   const grade = getCourseGrade(percentComplete);
   const progress = getCourseProgress(percentRemaining);
-  getStudyPlan(studyDay);
+  const studyPlan = getStudyPlan(studyDay);
   displayRemainingModules(completedModules);
+  applyDashboardColor(percentComplete);
   displayDashboard(output, studentName, courseModules, completedModules, totalStudyHours, percentComplete, percentRemaining, grade, progress, studyDay, studyPlan);
 };
 
@@ -192,13 +198,13 @@ const displayDashboard = (output, studentName, courseModules, completedModules, 
   <p><strong>Total Modules:</strong> ${courseModules.length}</p>
   <p><strong>Completed Modules:</strong> ${completedModules}</p>
   <p><strong>Total Study Hours:</strong> ${totalStudyHours}</p>
-  <p><strong>Percent Complete:</strong>${percentComplete.toFixed(0)}%</p>
-  <p><strong>Percent Remaining:</strong>${percentRemaining.toFixed(0)}%</p>
+  <p><strong>Percent Complete:</strong> ${percentComplete.toFixed(0)}%</p>
+  <p><strong>Percent Remaining:</strong> ${percentRemaining.toFixed(0)}%</p>
   <p><strong>Current Grade:</strong> ${grade}</p>
-  <p><strong>Progress Status:</strong>${progress}</p>
-  <p><strong>Study Day:</strong>${studyDay}</p>
-  <p><strong>Today's Plan:</strong>${studyPlan}</p>
-  <p><strong>Remaining Modules</strong><div id="remainingModulesList"></div></p>
+  <p><strong>Progress Status:</strong> ${progress}</p>
+  <p><strong>Study Day:</strong> ${studyDay}</p>
+  <p><strong>Today's Plan:</strong> ${studyPlan}</p>
+  <p><strong>Remaining Modules:</strong><div id="remainingModulesList"></div></p>
   </div>`;
 };
 
@@ -258,11 +264,11 @@ display("Today's study plan is", getStudyPlan(studyDay));
 // Progress color
 const applyDashboardColor = percentComplete => {
   if (percentComplete >= 75) {
-    output.style.backgroundColor = lightgreen;
+    output.style.backgroundColor = "lightgreen";
   } else if (percentComplete >= 25) {
-    output.style.backgroundColor = lightyellow;
+    output.style.backgroundColor = "lightyellow";
   } else {
-    output.style.backgroundColor = lightcoral;
+    output.style.backgroundColor = "lightcoral";
   }
 };
 
@@ -270,9 +276,9 @@ const applyDashboardColor = percentComplete => {
 const resetDashboard = () => {
   studentNameInput = "";
   studyDayInput = "";
-  output.innerHTML = "";
+  output.innerHTML = ``;
   completedModulesInput = 0;
-  output.style.backgroundColor = white;
+  output.style.backgroundColor = "white";
 };
 generateButton.addEventListener("click", generateDashboard);
 resetButton.addEventListener("click", resetDashboard);
