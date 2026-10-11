@@ -171,22 +171,39 @@ const displayRemainingModules = (completedModules) => {
 
 // get user input 
 const generateDashboard = () => {
+ try {
   const studentName = studentNameInput.value;
+  console.log("Student Name: ", studentName);
   const completedModules = completedModulesInput.value;
+  console.log("Completed Modules: ", completedModules);
   const studyDay = studyDayInput.value;
+  console.log("Study Day: ", studyDay);
   const totalStudyHours = calculateStudyHours(courseModules.length);
   const percentComplete = calculatePercentComplete(completedModules, courseModules.length);
+  console.log("Percent Complete: ", percentComplete);
   let modulesRemaining = totalModules - completedModules;
   let hoursRemaining = hoursPerWeek * modulesRemaining;
   let percentRemaining = (hoursRemaining / totalStudyHours) * 100;
   //let dailyStudyHours = hoursPerWeek / 7;
   //let dailyStudyMinutes = dailyStudyHours * 60;
   const grade = getCourseGrade(percentComplete);
+  console.log("Grade: ", grade);
   const progress = getCourseProgress(percentRemaining);
+  console.log("Progress: ", progress);
   const studyPlan = getStudyPlan(studyDay);
   displayRemainingModules(completedModules);
   applyDashboardColor(percentComplete);
   displayDashboard(output, studentName, courseModules, completedModules, totalStudyHours, percentComplete, percentRemaining, grade, progress, studyDay, studyPlan);
+  validateInputs(studentName, completedModules, studyDay);
+  runUnitTests();
+ } catch (error) {
+    output.innerHTML = `
+    <div class = "dashboard-card">
+    <h2>Error</h2>
+    <ul>${error.message}</ul>
+    </div>`;
+    output.style.backgroundColor = "#f8d7da";
+ }
 };
 
 // Generate dashboard summary
@@ -206,6 +223,23 @@ const displayDashboard = (output, studentName, courseModules, completedModules, 
   <p><strong>Today's Plan:</strong> ${studyPlan}</p>
   <p><strong>Remaining Modules:</strong><div id="remainingModulesList"></div></p>
   </div>`;
+};
+
+// validating inputs
+const validateInputs = (studentName, completedModules, studyDay) => {
+  const errors = [];
+  if (studentName.trim() === "") {
+    errors.push(`<li>Please enter a name.</li>`);
+  }
+  if (completedModules < 0 || completedModules > 10) {
+    errors.push(`<li>Completed modules must be between 0 and 10.</li>`);
+  }
+  if (studyDay === "") {
+    errors.push(`<li>Please select a study day.</li>`);
+  }
+  if (errors.length > 0) {
+    throw new Error(errors.join(""));
+  }
 };
 
 // display completed modules
@@ -275,10 +309,30 @@ const applyDashboardColor = percentComplete => {
 // Handling the button click
 const resetDashboard = () => {
   studentNameInput = "";
+  console.log("Student Name: ", studentNameInput);
   studyDayInput = "";
+  console.log("Study Day: ", studyDayInput);
   output.innerHTML = ``;
   completedModulesInput = 0;
+  console.log("Completed Modules: ", completedModulesInput);
   output.style.backgroundColor = "white";
 };
 generateButton.addEventListener("click", generateDashboard);
 resetButton.addEventListener("click", resetDashboard);
+
+// unit testing
+const runUnitTests = () => {
+  // unit tests for each letter grade
+  console.assert(getCourseGrade(94) === 'A', "Percent complete earns a grade of A");
+  console.assert(getCourseGrade(82) === 'B', "Percent complete earns a grade of B");
+  console.assert(getCourseGrade(70) === 'C', "Percent complete earns a grade of C");
+  console.assert(getCourseGrade(68) === 'D', "Percent complete earns a grade of D");
+  console.assert(getCourseGrade(40) === 'F', "Percent complete earns a grade of F");
+
+  // unit tests for course progress
+  console.assert(getCourseProgress(0) === 'Finished!', "Percent remaining indicates course progress is finished");
+  console.assert(getCourseProgress(14) === 'Almost Finished!', "Percent remaining indicates course progress is almost finished");
+  console.assert(getCourseProgress(44) === 'Making Progress', "Percent remaining indicates course progress is making progress");
+  console.assert(getCourseProgress(80) === 'Just Getting Started', "Percent remaining indicates course progress is just getting started");
+  console.assert(getCourseProgress(102) === 'Invalid entry.', "Percent remaining is an invalid entry");
+};
