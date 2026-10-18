@@ -26,6 +26,8 @@ let studyDayInput = document.getElementById("studyDay");
 const generateButton = document.getElementById("generateButton");
 const resetButton = document.getElementById("resetButton");
 let output = document.getElementById("output");
+const jokeContainer = document.getElementById("jokeContainer");
+const quoteContainer = document.getElementById("quoteContainer");
 
 // TODO: Create variables for your name (string), total number of modules for our class (number), and if you're enrolled (boolean)
 const courseModules = ['Module 1', 'Module 2', 'Module 3', 'Module 4', 'Module 5', 'Module 6', 'Module 7', 'Module 8', 'Module 9', 'Module 10'];
@@ -346,3 +348,57 @@ const runUnitTests = () => {
   // unit test for study plan
   console.assert(getStudyPlan('Wednesday') === 'Rest day today. Yay!', "Get study plan for Wednesday test failed");
 };
+
+const getJoke = async () => {
+  const response = await fetch("https://official-joke-api.appspot.com/random_joke");
+
+  if (!response.ok) {
+    throw new Error("Unable to retrieve joke.");
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+const displayJoke = async () => {
+  try {
+    jokeContainer.innerHTML = "Loading joke...";
+    const joke = await getJoke();
+    jokeContainer.innerHTML = `<p>${joke.setup}</p>
+                               <p>${joke.punchline}</p>`;
+  } catch (error) {
+    jokeContainer.innerHTML = "Unable to load joke.";
+  }
+};
+
+const getQuote = async () => {
+    // Fetch a random quote from the API
+    const response = await fetch("https://dummyjson.com/quotes/random");
+    // Check whether the response was successful
+    if (!response.ok) {
+      throw new Error("Unable to retrieve quote.");
+    }
+    // Convert the response to JSON
+    const data = await response.json();
+    // Return the quote data
+    return data;
+};
+
+const displayQuote = async () => {
+    try {
+        // Display the loading message
+        quoteContainer.innerHTML = "Loading quote...";
+        // Call getQuote() and save the returned data
+        const quote = await getQuote();
+        // Display the quote and author
+        quoteContainer.innerHTML = `<p>${quote.quote}</p>
+                                    <p>${quote.author}</p>`;
+    } catch (error) {
+        // Display an error message
+        quoteContainer.innerHTML = "Unable to load quote.";
+    }
+};
+
+displayJoke();
+displayQuote();
