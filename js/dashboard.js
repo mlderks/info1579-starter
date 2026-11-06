@@ -1,7 +1,12 @@
 import { courseModules } from "./data.js";
 
 // reset dashboard
-export const resetDashboard = (studentNameInput, completedModulesInput, studyDayInput, output) => {
+export const resetDashboard = (
+  studentNameInput,
+  completedModulesInput,
+  studyDayInput,
+  output,
+) => {
   console.log("Student Name: ", studentNameInput.value);
   console.log("Completed Modules: ", completedModulesInput.value);
   console.log("Study Day: ", studyDayInput.value);
@@ -13,7 +18,7 @@ export const resetDashboard = (studentNameInput, completedModulesInput, studyDay
 };
 
 // display course modules
-export const displayModules = modules => {
+export const displayModules = (modules) => {
   const list = document.createElement("ul");
   for (let i = 0; i < courseModules.length; i++) {
     // display(`Module ${i + 1}`, modules[i]);
@@ -43,7 +48,20 @@ export const applyDashboardColor = (percentComplete, output) => {
 };
 
 // Generate dashboard summary
-export const displayDashboard = (studentName, courseModules, completedModules, totalStudyHours, remainingHours, percentComplete, percentRemaining, grade, progress, studyDay, studyPlan, output) => {
+export const displayDashboard = (
+  studentName,
+  courseModules,
+  completedModules,
+  totalStudyHours,
+  remainingHours,
+  percentComplete,
+  percentRemaining,
+  grade,
+  progress,
+  studyDay,
+  studyPlan,
+  output,
+) => {
   output.innerHTML = `
   <div class="dashboard-card">
   <h2>My Study Dashboard</h2>
