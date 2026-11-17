@@ -5,13 +5,16 @@ export const resetDashboard = (
   studentNameInput,
   completedModulesInput,
   studyDayInput,
+  careerInput,
   output,
 ) => {
   console.log("Student Name: ", studentNameInput.value);
   console.log("Completed Modules: ", completedModulesInput.value);
   console.log("Study Day: ", studyDayInput.value);
+  console.log("Career Path: ", careerInput.value);
   studentNameInput.value = "";
   studyDayInput.value = "";
+  careerInput.value = "";
   output.innerHTML = ``;
   completedModulesInput.value = 0;
   output.style.backgroundColor = "white";
@@ -60,6 +63,7 @@ export const displayDashboard = (
   progress,
   studyDay,
   studyPlan,
+  career,
   output,
 ) => {
   output.innerHTML = `
@@ -76,6 +80,7 @@ export const displayDashboard = (
   <p><strong>Progress Status:</strong> ${progress}</p>
   <p><strong>Study Day:</strong> ${studyDay}</p>
   <p><strong>Today's Plan:</strong> ${studyPlan}</p>
+  <p><strong>Career Path:</strong> ${career}</p>
   <p><strong>Remaining Modules:</strong></p>
   <div id="remainingModulesList"></div>
   </div>`;

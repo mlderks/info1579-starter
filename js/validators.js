@@ -9,6 +9,7 @@ export const validateInputs = (
   studentName,
   completedModules,
   studyDay,
+  career,
   courseModules,
 ) => {
   // store any validation errors in this array
@@ -22,6 +23,9 @@ export const validateInputs = (
   }
   if (studyDay === "") {
     errors.push(`<li>Please select a study day.</li>`);
+  }
+  if (career === "") {
+    errors.push(`<li>Please select a career path.</li>`);
   }
   // if errors were found, stop and report them
   if (errors.length > 0) {
